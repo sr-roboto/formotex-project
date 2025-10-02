@@ -3,6 +3,7 @@ import { AuthController } from './controller';
 import { AuthRepository } from '../../domain/repositories/auth.repository';
 import { MongoAuthDataSource, MongoAuthRepository } from '../../infrastructure';
 import { AuthDataSource } from '../../domain';
+import { AuthMiddleware } from '../middlewares/auth.middleware';
 
 export class AuthRoutes {
   static get routes(): Router {
@@ -14,6 +15,8 @@ export class AuthRoutes {
     router.post('/login', controller.loginUser);
 
     router.post('/register', controller.registerUser);
+
+    router.get('/', AuthMiddleware.verifyToken, controller.getUsers);
 
     return router;
   }
