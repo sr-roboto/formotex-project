@@ -95,6 +95,8 @@ out
 # Nuxt.js build / generate output
 .nuxt
 dist
+postgres
+mongo
 
 # Gatsby files
 .cache/
@@ -143,3 +145,4 @@ dist
 .svelte-kit
 
 # End of https://www.toptal.com/developers/gitignore/api/node
+/src/generated/prisma

@@ -1,15 +1,16 @@
-version: '3'
+version: '3.8'
 
 services:
   db:
-    image: postgres:16-alpine
+    image: mongo:8.0
     restart: always
     ports:
-      - '5442:5432'
+      - '27017:27017'
     environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-    container_name: leximatedb
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_DB_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DB_NAME}
+
+    container_name: formotex-project-db
     volumes:
-      - ./postgres:/var/lib/postgres/data
+      - ./mongo:/data/db
