@@ -7,7 +7,7 @@ import {
 
 export class PgAuthDataSource implements AuthDataSource {
   async register(registerUserDto: RegisterUserDto): Promise<UserEntity> {
-    const { name, email, password, role } = registerUserDto;
+    const { name, email, password } = registerUserDto;
 
     try {
       return new UserEntity(1, name, email, password, ['ADMIN_ROLE']);
