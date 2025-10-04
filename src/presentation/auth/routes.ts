@@ -1,8 +1,6 @@
 import { Router } from 'express';
 import { AuthController } from './controller';
-import { AuthRepository } from '../../domain/repositories/auth.repository';
 import { MongoAuthDataSource, MongoAuthRepository } from '../../infrastructure';
-import { AuthDataSource } from '../../domain';
 import { AuthMiddleware } from '../middlewares/auth.middleware';
 
 export class AuthRoutes {

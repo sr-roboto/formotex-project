@@ -1,10 +1,17 @@
 import jwt from 'jsonwebtoken';
 import { envs } from './envs';
 
+export interface JwtPayload {
+  id: string;
+  role: string[];
+  iat?: number;
+  exp?: number;
+}
+
 export class JwtAdapter {
   static async generateToken(
     payload: object,
-    duration: jwt.SignOptions['expiresIn'] = '2h'
+    duration: number = 2 * 60 * 60
   ): Promise<string | null> {
     return new Promise((resolve) => {
       jwt.sign(
@@ -21,13 +28,13 @@ export class JwtAdapter {
     });
   }
 
-  static async verifyToken(token: string) {
+  static async verifyToken(token: string): Promise<JwtPayload | null> {
     return new Promise((resolve) => {
       jwt.verify(token, envs.JWT_SECRET, (err, decoded) => {
         if (err) {
           return resolve(null);
         }
-        resolve(decoded);
+        resolve(decoded as JwtPayload);
       });
     });
   }
