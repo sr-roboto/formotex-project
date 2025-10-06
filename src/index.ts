@@ -3,10 +3,6 @@ import { MongoDatabase } from './data/mongodb';
 import { AppRoutes } from './presentation/routes';
 import { Server } from './presentation/server';
 
-(() => {
-  main();
-})();
-
 async function main() {
   await MongoDatabase.connect({
     mongoUrl: envs.MONGO_DB_URL,
@@ -17,3 +13,5 @@ async function main() {
     routes: AppRoutes.routes,
   }).start();
 }
+
+main();

@@ -15,14 +15,10 @@ export class UserMapper {
       throw CustomError.badRequest('Invalid object: missing email');
     }
 
-    if (!password) {
-      throw CustomError.badRequest('Invalid object: missing password');
-    }
-
     if (!role) {
       throw CustomError.badRequest('Invalid object: missing role');
     }
 
-    return new UserEntity(id || _id, name, email, password, role);
+    return new UserEntity(id || _id, name, email, password || '', role);
   }
 }
