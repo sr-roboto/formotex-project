@@ -32,6 +32,6 @@ export class RegisterUserDto {
       return ['Password must be at least 6 characters long'];
     }
 
-    return [null, new RegisterUserDto(name, email, password)];
+    return [null, new RegisterUserDto(name, email.toLowerCase(), password)];
   }
 }

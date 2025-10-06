@@ -8,9 +8,11 @@ export class AuthMiddleware {
     next: NextFunction
   ) => {
     const authHeader = req.header('Authorization');
+
     if (!authHeader) {
       return res.status(401).json({ error: 'No token provided' });
     }
+
     if (!authHeader.startsWith('Bearer ')) {
       return res.status(401).json({ error: 'Invalid token format' });
     }
@@ -19,14 +21,13 @@ export class AuthMiddleware {
 
     try {
       const payload = await JwtAdapter.verifyToken(token);
+
       if (!payload) {
         return res.status(401).json({ error: 'Invalid token' });
       }
 
-      if (!req.body) {
-        req.body = {};
-      }
-      req.body.payload = payload;
+      req.user = payload;
+
       next();
     } catch (error) {
       console.log(error);

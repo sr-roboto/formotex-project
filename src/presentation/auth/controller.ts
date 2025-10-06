@@ -22,31 +22,40 @@ export class AuthController {
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 
-  loginUser = (req: Request, res: Response) => {
+  loginUser = async (req: Request, res: Response) => {
     const [error, loginUserDto] = LoginUserDto.create(req.body);
     if (error) {
       return res.status(400).json({ error });
     }
-    new LoginUserUseCase(this.authRepository)
-      .execute(loginUserDto!)
-      .then((data) => res.json(data))
-      .catch((error) => this.HandleError(error, res));
+    const foundUser = await new LoginUserUseCase(this.authRepository).execute(
+      loginUserDto!
+    );
+
+    return res.status(200).json(foundUser);
   };
 
-  registerUser = (req: Request, res: Response) => {
+  registerUser = async (req: Request, res: Response) => {
     const [error, registerUserDto] = RegisterUserDto.create(req.body);
     if (error) {
       return res.status(400).json({ error });
     }
-    new RegisterUserCase(this.authRepository)
-      .execute(registerUserDto!)
-      .then((data) => res.json(data))
-      .catch((error) => this.HandleError(error, res));
+    const data = await new RegisterUserCase(this.authRepository).execute(
+      registerUserDto!
+    );
+
+    return res.status(201).json(data);
   };
 
-  getUsers = (req: Request, res: Response) => {
-    UserModel.find()
-      .then((users) => res.json({ token: req.body.payload }))
-      .catch((error) => this.HandleError(error, res));
+  getUsers = async (req: Request, res: Response) => {
+    if (req.user?.role.includes('admin') === false) {
+      return this.HandleError(
+        CustomError.forbidden(
+          'You do not have permission to access this resource'
+        ),
+        res
+      );
+    }
+    const users = await UserModel.find().select('-password');
+    return res.json(users);
   };
 }

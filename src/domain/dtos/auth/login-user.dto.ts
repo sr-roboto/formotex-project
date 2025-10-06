@@ -19,6 +19,10 @@ export class LoginUserDto {
       return ['Invalid or missing password'];
     }
 
+    if (password.length < 6) {
+      return ['Password must be at least 6 characters long'];
+    }
+
     return [null, new LoginUserDto(email, password)];
   }
 }
