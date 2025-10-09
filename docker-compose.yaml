@@ -1,14 +1,32 @@
 services:
+  api:
+    build: .
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env
+    networks:
+      - app-network
+    depends_on:
+      - db
+
   db:
-    image: mongo:8.0
-    restart: always
+    image: mongo:6
     ports:
       - '27017:27017'
+    restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_DB_USER}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_DB_PASSWORD}
       MONGO_INITDB_DATABASE: ${MONGO_DB_NAME}
-
-    container_name: formotex-project-db
     volumes:
-      - ./mongo:/data/db
+      - db-data:/data/db
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db-data:

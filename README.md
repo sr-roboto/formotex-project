@@ -213,6 +213,54 @@ npm run build      # Compilar TypeScript a JavaScript
 npm run start      # Ejecutar aplicación compilada
 ```
 
+## Levantar el Entorno con Docker Compose
+
+Para levantar el entorno completo de la aplicación (incluyendo la base de datos
+MongoDB y la API) utilizando Docker Compose, sigue estos pasos:
+
+### 1. Prerrequisitos
+
+Asegúrate de tener Docker y Docker Compose instalados en tu sistema. Puedes
+descargarlos desde el sitio oficial de Docker.
+
+### 2. Configuración de Variables de Entorno
+
+Crea un archivo `.env` en la raíz del proyecto, basándote en el archivo
+`.env.example`. Configura las variables de entorno necesarias, como `PORT`,
+`MONGO_DB_NAME`, `MONGO_DB_USER`, `MONGO_DB_PASSWORD`, `MONGO_DB_URL` y
+`JWT_SECRET`.
+
+```bash
+cp .env.example .env
+# Edita el archivo .env con tus configuraciones
+```
+
+### 3. Levantar el Entorno
+
+Ejecuta el siguiente comando en la raíz del proyecto para construir las imágenes
+y levantar los servicios definidos en `docker-compose.yaml`:
+
+```bash
+docker-compose up --build
+```
+
+Esto iniciará la base de datos MongoDB y la API de Node.js.
+
+### 4. Acceso al Servidor
+
+Una vez que el entorno esté levantado, la API estará accesible en:
+
+`http://localhost:3000`
+
+### 5. Detener el Entorno
+
+Para detener y remover los contenedores, redes y volúmenes creados por Docker
+Compose, ejecuta:
+
+```bash
+docker-compose down
+```
+
 ## Middleware Implementados
 
 ### AuthMiddleware
